@@ -1,6 +1,6 @@
 <?php
-
-
+namespace Model;
+require "Player.php";
 class Game
 {
     public $player1;
@@ -14,7 +14,8 @@ class Game
 
     function probaPlayer1()
     {
-        $exposant = ($this->player2-$this->player1)/400;
+        $exposant = ($this->getPlayer2()->getLevel()
+                -$this->getPlayer1()->getLevel())/400;
         $division = 1+(10**$exposant);
         return 1/$division;
 
@@ -22,7 +23,8 @@ class Game
 
     function probaPlayer2()
     {
-        $exposant = ($this->player1-$this->player2)/400;
+        $exposant = ($this->getPlayer1()->getLevel()
+                -$this->getPlayer2()->getLevel())/400;
         $division = 1+(10**$exposant);
         return 1/$division;
     }

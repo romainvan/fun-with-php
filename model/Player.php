@@ -1,5 +1,5 @@
 <?php
-
+namespace Model;
 class Player{
     public $name;
     public $level;
@@ -8,6 +8,11 @@ class Player{
     {
         $this->name=$name;
         $this->level=1200;
+    }
+
+    function correctLevel($resultat,$proba)
+    {
+        $this->level+=32*($resultat-$proba);
     }
 
     /**
