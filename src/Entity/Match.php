@@ -152,4 +152,30 @@ class Match
     {
         $this->status = $status;
     }
+
+    public function getWinner()
+    {
+        if (null === $this->scorePlayerA ?? $this->scorePlayerB ?? null) {
+            throw new \Exception('Missing result to get a winner');
+        }
+
+        $potentialWinners = [
+            -1 => $this->playerB,
+            0 => null,
+            1 => $this->playerA,
+        ];
+
+        return $potentialWinners[$this->scorePlayerA <=> $this->scorePlayerB];
+    }
+
+    public function updateRatios()
+    {
+        $winner = $this->getWinner();
+
+        $resultPlayerA = $this->playerA === $winner ? 1 : ($this->playerB === $winner ? 0 : 0.5);
+        $resultPlayerB = $this->playerB === $winner ? 1 : ($this->playerA === $winner ? 0 : 0.5);
+
+        $this->playerA->updateRatioAgainst($this->playerB, $resultPlayerA);
+        $this->playerB->updateRatioAgainst($this->playerA, $resultPlayerB);
+    }
 }

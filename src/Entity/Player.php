@@ -39,6 +39,26 @@ class Player implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private ?float $ratio = null;
+
+    private function probabilityAgainst (Player $player)
+    {
+        return 1/(1+(10 ** (($player->getRatio() - $this->getRatio())/400)));
+    }
+
+    public function updateRatioAgainst (Player $player, $result): void
+    {
+        $this->ratio += 32 * ($result - $this->probabilityAgainst($player));
+    }
+
+    public function getRatio(): float
+    {
+        return $this->ratio ?? 1200.0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
