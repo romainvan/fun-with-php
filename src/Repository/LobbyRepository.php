@@ -19,6 +19,8 @@ class LobbyRepository extends ServiceEntityRepository
         parent::__construct($registry, Lobby::class);
     }
 
+
+
     // /**
     //  * @return Lobby[] Returns an array of Lobby objects
     //  */
