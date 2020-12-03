@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Attente{% endblock %}
+
+{% block body %}
+    <h1>Create new Attente</h1>
+
+    {{ include('attente/_form.html.twig') }}
+
+    <a href="{{ path('attente_index') }}">back to list</a>
+{% endblock %}

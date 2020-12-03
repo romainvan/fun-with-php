@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Attente index{% endblock %}
+
+{% block body %}
+    <h1>Attente index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attente in attentes %}
+            <tr>
+                <td>{{ attente.id }}</td>
+                <td>{{ attente.name }}</td>
+                <td>
+                    <a href="{{ path('attente_show', {'id': attente.id}) }}">show</a>
+                    <a href="{{ path('attente_edit', {'id': attente.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('attente_new') }}">Create new</a>
+{% endblock %}

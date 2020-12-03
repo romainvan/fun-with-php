@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Attente{% endblock %}
+
+{% block body %}
+    <h1>Edit Attente</h1>
+
+    {{ include('attente/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('attente_index') }}">back to list</a>
+
+    {{ include('attente/_delete_form.html.twig') }}
+{% endblock %}
