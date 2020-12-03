@@ -3,10 +3,23 @@
 namespace App\Entity;
 
 use App\Repository\LobbyRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LobbyRepository::class)
+ * @ApiResource(
+ *     security="is_granted('ROLE_USER')",
+ *     collectionOperations={
+ *      "get" = {"normalization_context"={"groups"={"Lobby:Collection:Read"}}},
+ *      "post"
+ *     },
+ *     itemOperations={
+ *          "get",
+ *          "put" = {"security"="is_granted('ROLE_ADMIN')"},
+ *          "delete" = {"security"="is_granted('ROLE_ADMIN')"},
+ *     }
+ * )
  */
 class Lobby
 {

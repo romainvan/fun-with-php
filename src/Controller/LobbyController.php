@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LobbyController extends AbstractController
 {
+    private $pas=100;
     /**
      * @Route("", name="lobby_index")
      */
@@ -76,14 +77,14 @@ class LobbyController extends AbstractController
     {
         $lobby = $lobbyRepository->findAll()[0];
         $allPlayers = $lobby->getAllPlayers();
-        $pas = 100;
         $size = sizeof($allPlayers);
         $entityManager = $this->getDoctrine()->getManager();
+        $playamatch = false;
         for($i=0;$i<$size;$i++){
             for($j=0;$j<$size;$j++){
                 $playerA = $allPlayers[$i];
                 $playerB = $allPlayers[$j];
-                if($playerA != $playerB){
+                if($playerA != $playerB && $lobby->okMatch($playerA,$playerB,$this->pas)){
                     $match = new Match();
                     $match->setPlayerA($playerA);
                     $match->setPlayerB($playerB);
@@ -91,9 +92,15 @@ class LobbyController extends AbstractController
                     $entityManager->flush();
                     $lobby->removePlayer($playerA);
                     $lobby->removePlayer($playerB);
+                    $playamatch = true;
                 }
             }
         }
+        /**
+        if(!$playamatch){
+            $this->playGame($lobbyRepository,$this->pas+100);
+        }
+         * **/
         $matches = $this->getDoctrine()
             ->getRepository(Match::class)
             ->findAll();
