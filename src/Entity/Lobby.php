@@ -44,5 +44,22 @@ class Lobby
         array_push($this->allPlayers,$player);
     }
 
+    public function removePlayer($player):void
+    {
+        if (in_array($player, $this->allPlayers))
+        {
+            unset($this->allPlayers[array_search($player,$this->allPlayers)]);
+        }
+    }
+
+    public function okMatch($player1,$player2,$pas) : bool
+    {
+        $res = $player2->getRatio() - $player1->getRatio();
+        if(res >=0 && res <=$pas){
+            return true;
+        }
+        return false;
+    }
+
 
 }
