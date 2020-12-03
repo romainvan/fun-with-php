@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Lobby;
+use App\Entity\Match;
 use App\Form\LobbyType;
 use App\Repository\LobbyRepository;
 use App\Repository\PlayerRepository;
@@ -49,7 +50,7 @@ class LobbyController extends AbstractController
     }
 
     /**
-     * @Route("/remove", name="remove")
+     * @Route("/remove", name="lobby_remove")
      */
     public function remove (PlayerRepository $playerRepository,LobbyRepository $lobbyRepository) : Response
     {
@@ -77,13 +78,29 @@ class LobbyController extends AbstractController
         $allPlayers = $lobby->getAllPlayers();
         $pas = 100;
         $size = sizeof($allPlayers);
+        $entityManager = $this->getDoctrine()->getManager();
         for($i=0;$i<$size;$i++){
             for($j=0;$j<$size;$j++){
-                if($allPlayers[i] != $allPlayers[j] &&  ){
-
+                $playerA = $allPlayers[$i];
+                $playerB = $allPlayers[$j];
+                if($playerA != $playerB){
+                    $match = new Match();
+                    $match->setPlayerA($playerA);
+                    $match->setPlayerB($playerB);
+                    $entityManager->persist($match);
+                    $entityManager->flush();
+                    $lobby->removePlayer($playerA);
+                    $lobby->removePlayer($playerB);
                 }
             }
         }
+        $matches = $this->getDoctrine()
+            ->getRepository(Match::class)
+            ->findAll();
+
+        return $this->render('match/index.html.twig', [
+            'matches' => $matches,
+        ]);
     }
 
 
